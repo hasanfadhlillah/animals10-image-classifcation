@@ -1,20 +1,26 @@
-# Proyek Klasifikasi Gambar: Intel Image Classification
+# Proyek Klasifikasi Gambar: Subset (5 Kelas) dari Animals-10
 
-Proyek ini bertujuan untuk membangun model klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengklasifikasikan gambar pemandangan alam dan perkotaan dari dataset Intel Image Classification.
+Proyek ini bertujuan untuk membangun model klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengklasifikasikan 5 jenis hewan dari dataset Animals-10. Penggunaan subset ini bertujuan untuk memenuhi kriteria jumlah gambar spesifik (10.000-15.000) sambil tetap mempertahankan karakteristik penting dataset seperti resolusi gambar yang tidak seragam.
+
+- **Nama:** Muhammad Hasan Fadhlillah
+- **Email:** mc006d5y2342@student.devacademy.id
+- **ID Dicoding:** MC006D5Y2342
 
 ## Detail Dataset
 
-Dataset yang digunakan adalah "Intel Image Classification" yang tersedia di Kaggle.
-- Sumber: [https://www.kaggle.com/datasets/puneet6060/intel-image-classification](https://www.kaggle.com/datasets/puneet6060/intel-image-classification)
-- Dataset ini berisi sekitar 25.000 gambar yang terbagi dalam 6 kelas:
-    1.  `buildings`
-    2.  `forest`
-    3.  `glacier`
-    4.  `mountain`
-    5.  `sea`
-    6.  `street`
-- Gambar memiliki resolusi 150x150 piksel.
-- Dataset dibagi menjadi data training (`seg_train`), data validasi (`seg_test`), dan ada juga folder `seg_pred` untuk prediksi (tidak digunakan untuk training berlabel).
+Dataset asli yang digunakan adalah "Animals-10" yang tersedia di Kaggle. Untuk proyek ini, digunakan subset yang terdiri dari 5 kelas hewan.
+
+- Sumber Dataset Asli: [https://www.kaggle.com/datasets/ashishsaxena2209/animals-10](https://www.kaggle.com/datasets/ashishsaxena2209/animals-10)
+- **Kelas yang Digunakan (Contoh):**
+  1.  `dog` (cane)
+  2.  `cat` (gatto)
+  3.  `horse` (cavallo)
+  4.  `sheep` (pecora)
+  5.  `elephant` (elefante)
+      _(Nama folder dalam dataset asli mungkin dalam bahasa Italia atau Inggris, sesuaikan dalam kode jika perlu)_
+- **Jumlah Gambar (Subset):** Sekitar 13.000 gambar (tergantung jumlah pasti per kelas yang dipilih).
+- **Resolusi Gambar:** Gambar-gambar dalam dataset ini memiliki resolusi yang beragam dan tidak seragam, yang memenuhi salah satu saran penting.
+- **Pembagian Dataset:** Data akan dimuat dan dibagi menjadi data training dan validasi. Selanjutnya, data validasi akan digunakan juga sebagai test set untuk evaluasi akhir.
 
 ## Arsitektur Model
 
@@ -23,30 +29,32 @@ Model CNN yang dibangun menggunakan arsitektur Sequential dengan beberapa layer 
 ## Tahapan Proyek
 
 1.  **Persiapan Data:**
-    * Mengunduh dan mengekstrak dataset.
-    * Memuat data training dan validasi menggunakan `image_dataset_from_directory`.
-    * Melakukan augmentasi data pada data training untuk meningkatkan variasi dan robustisitas model.
-    * Normalisasi data gambar.
+    - Mengunduh dataset Animals-10 (atau menggunakan yang sudah diunduh).
+    - Membuat struktur direktori baru untuk subset 5 kelas yang dipilih.
+    - Menyalin gambar dari kelas-kelas yang dipilih ke direktori subset.
+    - Memuat data training dan validasi dari direktori subset menggunakan `image_dataset_from_directory`.
+    - Melakukan augmentasi data pada data training.
+    - Normalisasi data gambar (menggunakan layer `Rescaling`).
 2.  **Pembuatan Model:**
-    * Mendefinisikan arsitektur model CNN.
-    * Menggunakan `Adam` optimizer dan `SparseCategoricalCrossentropy` sebagai loss function.
+    - Mendefinisikan arsitektur model CNN.
+    - Menggunakan `Adam` optimizer dan `CategoricalCrossentropy` (atau `SparseCategoricalCrossentropy` tergantung `label_mode`) sebagai loss function.
 3.  **Pelatihan Model:**
-    * Melatih model dengan data training dan validasi.
-    * Menggunakan callbacks: `EarlyStopping` untuk mencegah overfitting dan `ModelCheckpoint` untuk menyimpan model terbaik.
+    - Melatih model dengan data training dan validasi.
+    - Menggunakan callbacks: `EarlyStopping` dan `ModelCheckpoint`.
 4.  **Evaluasi Model:**
-    * Memvisualisasikan metrik akurasi dan loss selama training.
-    * Mengevaluasi performa model pada data test.
+    - Memvisualisasikan metrik akurasi dan loss selama training.
+    - Mengevaluasi performa model pada data test/validasi.
 5.  **Konversi Model:**
-    * Menyimpan model dalam format `SavedModel`.
-    * Mengonversi model ke format `TensorFlow Lite (TFLite)`.
-    * Mengonversi model ke format `TensorFlow.js (TFJS)`.
+    - Menyimpan model dalam format `SavedModel`.
+    - Mengonversi model ke format `TensorFlow Lite (TFLite)`.
+    - Mengonversi model ke format `TensorFlow.js (TFJS)`.
 6.  **Inferensi Model:**
-    * Melakukan contoh inferensi menggunakan model TFLite pada gambar baru.
+    - Melakukan contoh inferensi menggunakan model TFLite pada gambar baru.
 
 ## Hasil
 
-- Akurasi Training: [Isi dengan akurasi training Anda, target >= 95%]
-- Akurasi Validasi/Test: [Isi dengan akurasi validasi/test Anda, target >= 95%]
+- Akurasi Training:
+- Akurasi Validasi/Test:
 
 Model berhasil disimpan dalam format `SavedModel`, `TFLite`, dan `TFJS`. Bukti inferensi juga disertakan dalam notebook.
 
@@ -56,10 +64,9 @@ Model berhasil disimpan dalam format `SavedModel`, `TFLite`, dan `TFJS`. Bukti i
     ```bash
     pip install -r requirements.txt
     ```
-2.  Unduh dataset Intel Image Classification dari Kaggle dan letakkan dalam struktur direktori yang sesuai, atau sesuaikan path dataset dalam notebook.
-    Contoh path yang diharapkan:
-    ```
-    <base_path>/intel-image-classification/seg_train/
-    <base_path>/intel-image-classification/seg_test/
-    ```
-3.  Jalankan semua sel dalam file `notebook.ipynb`.
+2.  **Persiapan Dataset:**
+    - Unduh dataset "Animals-10" dari Kaggle.
+    - Jalankan sel-sel awal di notebook yang berfungsi untuk membuat direktori subset dan menyalin file gambar dari 5 kelas yang dipilih. Pastikan path ke dataset Animals-10 yang asli sudah benar.
+    - Contoh struktur path dataset asli yang diharapkan: `<base_animals10_path>/raw-img/<class_name>/...`
+    - Contoh struktur path dataset subset yang akan dibuat oleh notebook: `animals_subset/train/<class_name>/...` dan `animals_subset/val/<class_name>/...`
+3.  Jalankan semua sel dalam file `notebook.ipynb` secara berurutan.
