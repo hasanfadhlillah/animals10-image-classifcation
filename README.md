@@ -2,10 +2,6 @@
 
 Proyek ini bertujuan untuk membangun model klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengklasifikasikan gambar pemandangan alam dan perkotaan dari dataset Intel Image Classification.
 
-- **Nama:** [Nama Anda]
-- **Email:** [Email Anda]
-- **ID Dicoding:** [Username Dicoding Anda]
-
 ## Detail Dataset
 
 Dataset yang digunakan adalah "Intel Image Classification" yang tersedia di Kaggle.
