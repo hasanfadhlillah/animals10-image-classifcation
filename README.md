@@ -10,7 +10,7 @@ Proyek ini bertujuan untuk membangun model klasifikasi gambar menggunakan Convol
 
 Dataset asli yang digunakan adalah "Animals-10" yang tersedia di Kaggle. Untuk proyek ini, digunakan subset yang terdiri dari 5 kelas hewan.
 
-- Sumber Dataset Asli: [https://www.kaggle.com/datasets/ashishsaxena2209/animals-10](https://www.kaggle.com/datasets/ashishsaxena2209/animals-10)
+- Sumber Dataset Asli: [https://www.kaggle.com/datasets/alessiocorrado99/animals10](https://www.kaggle.com/datasets/alessiocorrado99/animals10)
 - **Kelas yang Digunakan (Contoh):**
   1.  `dog` (cane)
   2.  `cat` (gatto)
