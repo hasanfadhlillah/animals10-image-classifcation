@@ -1,72 +1,69 @@
-# Proyek Klasifikasi Gambar: Subset (5 Kelas) dari Animals-10
+# Proyek Klasifikasi Gambar: Animals-10
 
-Proyek ini bertujuan untuk membangun model klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengklasifikasikan 5 jenis hewan dari dataset Animals-10. Penggunaan subset ini bertujuan untuk memenuhi kriteria jumlah gambar spesifik (10.000-15.000) sambil tetap mempertahankan karakteristik penting dataset seperti resolusi gambar yang tidak seragam.
+## Deskripsi
+Proyek ini adalah submission untuk kelas Belajar Machine Learning untuk Pemula dari Dicoding. Tujuan proyek ini adalah untuk membangun model klasifikasi gambar yang mampu mengenali 10 jenis hewan berbeda dari dataset "Animals-10" yang diambil dari Kaggle.
 
+Dataset terdiri dari sekitar 28.000 gambar hewan yang terbagi dalam 10 kategori: cane, cavallo, elefante, farfalla, gallina, gatto, mucca, pecora, ragno, scoiattolo.
+
+## Detail Implementasi
 - **Nama:** Muhammad Hasan Fadhlillah
 - **Email:** mc006d5y2342@student.devacademy.id
 - **ID Dicoding:** MC006D5Y2342
+- **Dataset**: Animals-10 dari Kaggle (oleh alessiocorrado99)
+- **Path Dataset di Kaggle**: /kaggle/input/animals10/raw-img
+- **Ukuran Gambar Input**: 224x224
+- **Batch Size**: 16
+- **Arsitektur Model**: Transfer Learning dengan EfficientNetB0 + Custom layers (11 lapisan total)
+- **Optimizer**: Adam dengan learning rate adaptif
+- **Loss Function**: Categorical Crossentropy
+- **Callbacks**: ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+- **Target Akurasi Dicoding**: >85% (Wajib), >95% (Saran untuk Bintang 5)
+- **Akurasi Test Aktual**: 95.18%
 
-## Detail Dataset
+## Teknik yang Digunakan untuk Mencapai Akurasi >95%
+1. **Transfer Learning**: Menggunakan EfficientNetB0 pre-trained pada ImageNet
+2. **Two-Phase Training**: 
+   - Phase 1: Frozen base model (20 epochs)
+   - Phase 2: Fine-tuning dengan learning rate sangat kecil (30 epochs)
+3. **Advanced Data Augmentation**: Rotasi, shift, zoom, brightness, dll.
+4. **Batch Normalization**: Untuk stabilitas training
+5. **Dropout Layers**: Untuk mencegah overfitting
+6. **Learning Rate Scheduling**: ReduceLROnPlateau callback
+7. **Early Stopping**: Dengan patience untuk mencegah overfitting
 
-Dataset asli yang digunakan adalah "Animals-10" yang tersedia di Kaggle. Untuk proyek ini, digunakan subset yang terdiri dari 5 kelas hewan.
+## Struktur Direktori Submission
+```
+submission/
+├── tfjs_model/
+│   ├── group1-shard1of1.bin
+│   └── model.json
+├── tflite_model/
+│   ├── model.tflite
+│   └── labels.txt
+├── saved_model/
+│   ├── saved_model.pb
+│   └── variables/
+├── proyek-klasifikasi-gambar-animals10-classification.ipynb
+├── README.md
+└── requirements.txt
+```
 
-- Sumber Dataset Asli: [https://www.kaggle.com/datasets/alessiocorrado99/animals10](https://www.kaggle.com/datasets/alessiocorrado99/animals10)
-- **Kelas yang Digunakan (Contoh):**
-  1.  `dog` (cane)
-  2.  `cat` (gatto)
-  3.  `horse` (cavallo)
-  4.  `sheep` (pecora)
-  5.  `elephant` (elefante)
-      _(Nama folder dalam dataset asli mungkin dalam bahasa Italia atau Inggris, sesuaikan dalam kode jika perlu)_
-- **Jumlah Gambar (Subset):** Sekitar 13.000 gambar (tergantung jumlah pasti per kelas yang dipilih).
-- **Resolusi Gambar:** Gambar-gambar dalam dataset ini memiliki resolusi yang beragam dan tidak seragam, yang memenuhi salah satu saran penting.
-- **Pembagian Dataset:** Data akan dimuat dan dibagi menjadi data training dan validasi. Selanjutnya, data validasi akan digunakan juga sebagai test set untuk evaluasi akhir.
+## Cara Menjalankan di Kaggle
+1. Buat notebook baru di Kaggle
+2. Tambahkan dataset "Animals-10" (oleh alessiocorrado99) ke notebook
+3. Pastikan GPU/TPU aktif di pengaturan notebook
+4. Copy-paste semua code dari notebook ini
+5. Jalankan semua sel secara berurutan
+6. Save & Run All (Commit) setelah selesai
+7. Download file submission.zip dari tab Output
 
-## Arsitektur Model
+## Format Model yang Dihasilkan
+- **SavedModel**: Format standar TensorFlow untuk deployment
+- **TF-Lite**: Format optimized untuk mobile/edge devices
+- **TensorFlow.js**: Format untuk deployment di web browser
 
-Model CNN yang dibangun menggunakan arsitektur Sequential dengan beberapa layer Convolutional (Conv2D), MaxPooling2D, BatchNormalization, Dropout, dan Dense layer. Fungsi aktivasi ReLU digunakan pada hidden layer dan Softmax pada output layer untuk klasifikasi multi-kelas.
-
-## Tahapan Proyek
-
-1.  **Persiapan Data:**
-    - Mengunduh dataset Animals-10 (atau menggunakan yang sudah diunduh).
-    - Membuat struktur direktori baru untuk subset 5 kelas yang dipilih.
-    - Menyalin gambar dari kelas-kelas yang dipilih ke direktori subset.
-    - Memuat data training dan validasi dari direktori subset menggunakan `image_dataset_from_directory`.
-    - Melakukan augmentasi data pada data training.
-    - Normalisasi data gambar (menggunakan layer `Rescaling`).
-2.  **Pembuatan Model:**
-    - Mendefinisikan arsitektur model CNN.
-    - Menggunakan `Adam` optimizer dan `CategoricalCrossentropy` (atau `SparseCategoricalCrossentropy` tergantung `label_mode`) sebagai loss function.
-3.  **Pelatihan Model:**
-    - Melatih model dengan data training dan validasi.
-    - Menggunakan callbacks: `EarlyStopping` dan `ModelCheckpoint`.
-4.  **Evaluasi Model:**
-    - Memvisualisasikan metrik akurasi dan loss selama training.
-    - Mengevaluasi performa model pada data test/validasi.
-5.  **Konversi Model:**
-    - Menyimpan model dalam format `SavedModel`.
-    - Mengonversi model ke format `TensorFlow Lite (TFLite)`.
-    - Mengonversi model ke format `TensorFlow.js (TFJS)`.
-6.  **Inferensi Model:**
-    - Melakukan contoh inferensi menggunakan model TFLite pada gambar baru.
-
-## Hasil
-
-- Akurasi Training:
-- Akurasi Validasi/Test:
-
-Model berhasil disimpan dalam format `SavedModel`, `TFLite`, dan `TFJS`. Bukti inferensi juga disertakan dalam notebook.
-
-## Cara Menjalankan Notebook
-
-1.  Pastikan semua library dalam `requirements.txt` sudah terpasang.
-    ```bash
-    pip install -r requirements.txt
-    ```
-2.  **Persiapan Dataset:**
-    - Unduh dataset "Animals-10" dari Kaggle.
-    - Jalankan sel-sel awal di notebook yang berfungsi untuk membuat direktori subset dan menyalin file gambar dari 5 kelas yang dipilih. Pastikan path ke dataset Animals-10 yang asli sudah benar.
-    - Contoh struktur path dataset asli yang diharapkan: `<base_animals10_path>/raw-img/<class_name>/...`
-    - Contoh struktur path dataset subset yang akan dibuat oleh notebook: `animals_subset/train/<class_name>/...` dan `animals_subset/val/<class_name>/...`
-3.  Jalankan semua sel dalam file `notebook.ipynb` secara berurutan.
+## Catatan Penting
+- Model menggunakan Transfer Learning untuk mencapai akurasi tinggi
+- Dataset dapat dikurangi menjadi 13.000 gambar untuk mempercepat training
+- Two-phase training approach untuk hasil optimal
+- Model telah dioptimasi untuk berbagai platform deployment
