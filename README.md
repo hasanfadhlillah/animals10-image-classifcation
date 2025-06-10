@@ -2,7 +2,7 @@
 
 ## Deskripsi
 
-Proyek ini adalah submission untuk kelas Belajar Machine Learning untuk Pemula dari Dicoding. Tujuan proyek ini adalah untuk membangun model klasifikasi gambar yang mampu mengenali 10 jenis hewan berbeda dari dataset "Animals-10" yang diambil dari Kaggle.
+Tujuan proyek ini adalah untuk membangun model klasifikasi gambar yang mampu mengenali 10 jenis hewan berbeda dari dataset "Animals-10" yang diambil dari Kaggle.
 
 Dataset terdiri dari sekitar 28.000 gambar hewan yang terbagi dalam 10 kategori: cane, cavallo, elefante, farfalla, gallina, gatto, mucca, pecora, ragno, scoiattolo.
 
